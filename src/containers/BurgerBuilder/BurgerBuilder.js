@@ -70,7 +70,7 @@ class BurgerBuilder extends Component{
 
     
     render(){
-        let flag={}   //helps to disable that particular ingredient's button whose quantity is 0
+        let flag={};   //helps to disable that particular ingredient's button whose quantity is 0
         for(let obj of this.state.ingredients)
         {
             if(obj.no<=0)
