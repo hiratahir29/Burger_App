@@ -3,6 +3,7 @@ import Burger from "../../components/Burger/Burger.js";
 import BuildControls from "../../components/Burger/BuildControls/BuildControls.js";
 import Wrapper from "../../hoc/Wrapper.js";
 import Summary from "../../components/Summary/Summary.js";
+import axios from '../../axios';
 
 class BurgerBuilder extends Component{
     state={
@@ -15,6 +16,24 @@ class BurgerBuilder extends Component{
         goingToPurchase:false
     }
 
+        componentDidMount(){
+        //to get ingredients from firebase and set burger whenever app loads for the first time
+        axios.get('/ingredients.json').then(res=>{
+            
+           // console.log(res.data);
+            let ing=this.state.ingredients;
+            console.log(ing);
+            ing.map(obj=>{
+            //    console.log(obj.name);
+            //    console.log(res.data[obj.name]); 
+               obj.no=res.data[obj.name]
+                
+            })
+            this.setState({
+                ingredients:ing    
+            })
+        })
+    }
         addIng=(type)=>{
         let index=this.state.ingredients.findIndex(i=>i.name===type)
         let obj={...this.state.ingredients[index]}
