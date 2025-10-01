@@ -20,7 +20,7 @@ const BuildControls=props=>{
                            />
                 })
             }
-            <button className="OrderButton" onClick={props.showSummary}>Order Now</button>
+            <button className="OrderButton" onClick={props.showSummary} disabled={props.disableOrderButton}>Order Now</button>
         </div>
 
     )
