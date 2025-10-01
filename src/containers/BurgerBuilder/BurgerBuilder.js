@@ -84,6 +84,18 @@ class BurgerBuilder extends Component{
                 address:"lahore"
             }
         }
+                axios.post('/orders.json',myOrder).then(res=>{    //post my order to firebase
+            console.log(res);
+            this.setState({
+                goingToPurchase:false   //to close summary screen
+            })
+            
+            }
+        ).catch(error=>{
+            this.setState({
+                goingToPurchase:false   //to close summary screen
+            })
+        });
         
     }
 
