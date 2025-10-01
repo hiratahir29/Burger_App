@@ -1,6 +1,7 @@
 import { Component } from "react";
 import Burger from "../../components/Burger/Burger.js";
 import BuildControls from "../../components/Burger/BuildControls/BuildControls.js";
+import Wrapper from "../../hoc/Wrapper.js";
 
 class BurgerBuilder extends Component{
     state={
@@ -60,11 +61,11 @@ class BurgerBuilder extends Component{
          //now flag object contains something like this {'meat': true, 'cheese': true, 'salad': true}. we will pass this object to 'BUildControls'
        
         return(
-            <div>
+            <Wrapper>
                  <Burger ingredients={this.state.ingredients}/>
                  <BuildControls price={this.state.totalPrice} adding={this.addIng} removing={this.remIng} dis={flag}/>
 
-            </div>
+            </Wrapper>
            
         )
             
