@@ -42,12 +42,27 @@ class BurgerBuilder extends Component{
             totalPrice:totalUpdatedPrice
         })
     }
+
     
     render(){
+               let flag={}   //helps to disable that particular ingredient's button whose quantity is 0
+        for(let obj of this.state.ingredients)
+        {
+            if(obj.no<=0)
+            {
+                flag[obj.name]=true
+            }
+            else
+            {
+                flag[obj.name]=false
+            }
+        }
+         //now flag object contains something like this {'meat': true, 'cheese': true, 'salad': true}. we will pass this object to 'BUildControls'
+       
         return(
             <div>
                  <Burger ingredients={this.state.ingredients}/>
-                 <BuildControls price={this.state.totalPrice} adding={this.addIng} removing={this.remIng}/>
+                 <BuildControls price={this.state.totalPrice} adding={this.addIng} removing={this.remIng} dis={flag}/>
 
             </div>
            

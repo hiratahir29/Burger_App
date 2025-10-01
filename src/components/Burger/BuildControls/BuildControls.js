@@ -10,11 +10,13 @@ const BuildControls=props=>{
     return(
         <div className="BuildControls">
             <div>Current Price: <strong>{props.price}</strong></div>
+            {console.log(props.dis)}
             {
                 controls.map(obj=>{
                     return <BuildControl label={obj.label}
                             added={()=>props.adding(obj.type)}
                             removed={()=>props.removing(obj.type)}
+                            disable={props.dis[obj.type]}  //get only specific ingredient's boolean value from the 'flag' obj passed as prop here in 'dis'
                            />
                 })
             }
