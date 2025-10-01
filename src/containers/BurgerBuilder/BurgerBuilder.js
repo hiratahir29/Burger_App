@@ -3,6 +3,8 @@ import Burger from "../../components/Burger/Burger.js";
 import BuildControls from "../../components/Burger/BuildControls/BuildControls.js";
 import Wrapper from "../../hoc/Wrapper.js";
 import Summary from "../../components/Summary/Summary.js";
+import axios from '../../axios';
+import Error from "../../components/Error/Error.js";
 
 class BurgerBuilder extends Component{
     state={
@@ -12,9 +14,28 @@ class BurgerBuilder extends Component{
             {name:'salad',no:0,price:5}
         ],
         totalPrice:0,
-        goingToPurchase:false
+        goingToPurchase:false,
+        error:false
     }
 
+        componentDidMount(){
+        //to get ingredients from firebase and set burger whenever app loads for the first time
+        axios.get('/ingredients.json').then(res=>{
+            
+           // console.log(res.data);
+            let ing=this.state.ingredients;
+            console.log(ing);
+            ing.map(obj=>{
+            //    console.log(obj.name);
+            //    console.log(res.data[obj.name]); 
+               obj.no=res.data[obj.name]
+                
+            })
+            this.setState({
+                ingredients:ing    
+            })
+        })
+    }
         addIng=(type)=>{
         let index=this.state.ingredients.findIndex(i=>i.name===type)
         let obj={...this.state.ingredients[index]}
@@ -65,7 +86,25 @@ class BurgerBuilder extends Component{
                 address:"lahore"
             }
         }
+        axios.post('/orders.json',myOrder).then(res=>{    //post my order to firebase
+            console.log(res);
+            this.setState({
+                goingToPurchase:false   //to close summary screen
+            })
+            
+            }
+        ).catch(error=>{
+            this.setState({
+                error:true,
+                goingToPurchase:false   //to close summary screen
+            })
+        });
         
+    }
+        exitError=()=>{
+        this.setState({
+            error:false
+        })
     }
 
     
@@ -97,6 +136,7 @@ class BurgerBuilder extends Component{
        
         return(
             <Wrapper>
+                 {this.state.error &&<Error disable={this.exitError}/>}
                 {this.state.goingToPurchase && <Summary ing={this.state.ingredients} back={this.goBack} continue={this.goContinue}/>}
                  <Burger ingredients={this.state.ingredients}/>
                  <BuildControls  disableOrderButton={disableOrderButton} price={this.state.totalPrice} adding={this.addIng} removing={this.remIng} dis={flag} showSummary={this.showSummary}/>
