@@ -70,17 +70,28 @@ class BurgerBuilder extends Component{
 
     
     render(){
-        let flag={}   //helps to disable that particular ingredient's button whose quantity is 0
-        for(let obj of this.state.ingredients)
+        const disabledInfo=[...this.state.ingredients];
+
+        let flag={};   //helps to disable that particular ingredient's button whose quantity is 0
+        let quantityOfEveryIngredient=0;
+        let disableOrderButton;
+        for(let obj of disabledInfo)
         {
             if(obj.no<=0)
             {
-                flag[obj.name]=true
+                flag[obj.name]=true;
+                quantityOfEveryIngredient++;
             }
-            else
-            {
-                flag[obj.name]=false
+            else{
+                flag[obj.name]=false;
             }
+        }
+        if(quantityOfEveryIngredient===3)
+        {
+            disableOrderButton=true;
+        }
+        else{
+            disableOrderButton=false;
         }
          //now flag object contains something like this {'meat': true, 'cheese': true, 'salad': true}. we will pass this object to 'BUildControls'
        
@@ -88,7 +99,7 @@ class BurgerBuilder extends Component{
             <Wrapper>
                 {this.state.goingToPurchase && <Summary ing={this.state.ingredients} back={this.goBack} continue={this.goContinue}/>}
                  <Burger ingredients={this.state.ingredients}/>
-                 <BuildControls price={this.state.totalPrice} adding={this.addIng} removing={this.remIng} dis={flag} showSummary={this.showSummary}/>
+                 <BuildControls  disableOrderButton={disableOrderButton} price={this.state.totalPrice} adding={this.addIng} removing={this.remIng} dis={flag} showSummary={this.showSummary}/>
 
             </Wrapper>
            
