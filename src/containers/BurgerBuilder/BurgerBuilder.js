@@ -4,6 +4,7 @@ import BuildControls from "../../components/Burger/BuildControls/BuildControls.j
 import Wrapper from "../../hoc/Wrapper.js";
 import Summary from "../../components/Summary/Summary.js";
 import axios from '../../axios';
+import Error from "../../components/Error/Error.js";
 
 class BurgerBuilder extends Component{
     state={
@@ -13,7 +14,8 @@ class BurgerBuilder extends Component{
             {name:'salad',no:0,price:5}
         ],
         totalPrice:0,
-        goingToPurchase:false
+        goingToPurchase:false,
+        error:false
     }
 
         componentDidMount(){
@@ -84,7 +86,7 @@ class BurgerBuilder extends Component{
                 address:"lahore"
             }
         }
-                axios.post('/orders.json',myOrder).then(res=>{    //post my order to firebase
+        axios.post('/orders.json',myOrder).then(res=>{    //post my order to firebase
             console.log(res);
             this.setState({
                 goingToPurchase:false   //to close summary screen
@@ -93,10 +95,16 @@ class BurgerBuilder extends Component{
             }
         ).catch(error=>{
             this.setState({
+                error:true,
                 goingToPurchase:false   //to close summary screen
             })
         });
         
+    }
+        exitError=()=>{
+        this.setState({
+            error:false
+        })
     }
 
     
@@ -128,6 +136,7 @@ class BurgerBuilder extends Component{
        
         return(
             <Wrapper>
+                 {this.state.error &&<Error disable={this.exitError}/>}
                 {this.state.goingToPurchase && <Summary ing={this.state.ingredients} back={this.goBack} continue={this.goContinue}/>}
                  <Burger ingredients={this.state.ingredients}/>
                  <BuildControls  disableOrderButton={disableOrderButton} price={this.state.totalPrice} adding={this.addIng} removing={this.remIng} dis={flag} showSummary={this.showSummary}/>
