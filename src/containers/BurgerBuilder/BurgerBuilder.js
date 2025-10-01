@@ -1,6 +1,8 @@
 import { Component } from "react";
 import Burger from "../../components/Burger/Burger.js";
 import BuildControls from "../../components/Burger/BuildControls/BuildControls.js";
+import Wrapper from "../../hoc/Wrapper.js";
+import Summary from "../../components/Summary/Summary.js";
 
 class BurgerBuilder extends Component{
     state={
@@ -9,7 +11,8 @@ class BurgerBuilder extends Component{
             {name:'cheese',no:0,price:10},
             {name:'salad',no:0,price:5}
         ],
-        totalPrice:0
+        totalPrice:0,
+        goingToPurchase:false
     }
 
         addIng=(type)=>{
@@ -42,14 +45,52 @@ class BurgerBuilder extends Component{
             totalPrice:totalUpdatedPrice
         })
     }
+    showSummary=()=>{
+        this.setState({
+            goingToPurchase:true
+        })
+    }
+        goBack=()=>{
+        this.setState({
+            goingToPurchase:false
+        })
+    }
+    goContinue=()=>{
+        let myOrder={
+            ingredients:this.state.ingredients,
+            price:this.state.totalPrice,
+            OrderNo:1,
+            customer:{
+                name:"hira",
+                address:"lahore"
+            }
+        }
+        
+    }
+
     
     render(){
+        let flag={}   //helps to disable that particular ingredient's button whose quantity is 0
+        for(let obj of this.state.ingredients)
+        {
+            if(obj.no<=0)
+            {
+                flag[obj.name]=true
+            }
+            else
+            {
+                flag[obj.name]=false
+            }
+        }
+         //now flag object contains something like this {'meat': true, 'cheese': true, 'salad': true}. we will pass this object to 'BUildControls'
+       
         return(
-            <div>
+            <Wrapper>
+                {this.state.goingToPurchase && <Summary ing={this.state.ingredients} back={this.goBack} continue={this.goContinue}/>}
                  <Burger ingredients={this.state.ingredients}/>
-                 <BuildControls price={this.state.totalPrice} adding={this.addIng} removing={this.remIng}/>
+                 <BuildControls price={this.state.totalPrice} adding={this.addIng} removing={this.remIng} dis={flag} showSummary={this.showSummary}/>
 
-            </div>
+            </Wrapper>
            
         )
             
