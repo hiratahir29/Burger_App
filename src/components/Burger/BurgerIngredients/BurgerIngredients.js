@@ -8,7 +8,6 @@ const BurgerIngredients=(props)=>{
         case ('bread-bottom'):
             ingredient=<div className="BreadBottom"></div>
             break;
-            
         case ('meat'):
             ingredient=<div className='Meat'></div>
             break;
