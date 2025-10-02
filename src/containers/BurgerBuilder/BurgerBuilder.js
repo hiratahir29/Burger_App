@@ -15,7 +15,8 @@ class BurgerBuilder extends Component{
         ],
         totalPrice:0,
         goingToPurchase:false,
-        error:false
+        error:false,
+        query:""
     }
 
         componentDidMount(){
@@ -67,9 +68,22 @@ class BurgerBuilder extends Component{
         })
     }
     showSummary=()=>{
+               //Make an array of quantity of each ingredient to pass it in URL
+        let query=[];
+        for(let i of this.state.ingredients)
+        {
+             query.push(i.no);
+        }
+        console.log(query);    //[0,2,1]
+        //Make it string as URL can't be updated with array. It can be updated by adding string
+        let queryString=query.join(',');
+        console.log(queryString);    //0,2,1
         this.setState({
-            goingToPurchase:true
+            goingToPurchase:true,
+            query:queryString
         })
+
+
     }
         goBack=()=>{
         this.setState({
@@ -137,7 +151,9 @@ class BurgerBuilder extends Component{
         return(
             <Wrapper>
                  {this.state.error &&<Error disable={this.exitError}/>}
-                {this.state.goingToPurchase && <Summary ing={this.state.ingredients} back={this.goBack} continue={this.goContinue}/>}
+                {/* pass this query String as prop to OrderSummary component because there we have LINK on button click.
+                 When button is clicked, it will update the URL by adding this string with the help of LINK e.g. /checkout?0,2,1 */}
+                 {this.state.goingToPurchase && <Summary queryParams={this.state.query} back={this.goBack} continue={this.goContinue} ing={this.state.ingredients}/>}
                  <Burger ingredients={this.state.ingredients}/>
                  <BuildControls  disableOrderButton={disableOrderButton} price={this.state.totalPrice} adding={this.addIng} removing={this.remIng} dis={flag} showSummary={this.showSummary}/>
 

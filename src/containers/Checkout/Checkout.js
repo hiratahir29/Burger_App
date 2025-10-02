@@ -19,7 +19,22 @@ class Checkout extends Component{
             cancel:true
         })
     }
-    
+    componentDidMount(){
+        //Extract query parameters from URL starting from ? i.e. ?0,2,1 (representing 0 meat slices, 2 cheese slices and 1 salad) 
+        let queryParam=(this.props.location.search);
+        //Remove ? from string as it is unnecessary for us now
+        queryParam=queryParam.substr(1,queryParam.length-1);
+        console.log(queryParam);
+        let ingList=[...this.state.ingredients];
+        queryParam.split(',').map((e,i)=>{
+            //Places rightly e=0 in no i.e. {name:"meat", no:0,price:15}, e=2 in {name:"cheese", no:2,price:15} and same for salad
+            ingList[i].no=Number(e);
+        })
+        console.log(ingList);
+        this.setState({
+            ingredients:ingList
+        })
+    }
     render(){
        
         return(
