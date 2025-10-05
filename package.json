@@ -23,9 +23,9 @@
   },
   "eslintConfig": {
     "rules": {
-    "no-unused-vars": "off",
-    "no-console": "off"
-  },
+      "no-unused-vars": "off",
+      "no-console": "off"
+    },
     "extends": [
       "react-app",
       "react-app/jest"
@@ -42,5 +42,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
   }
 }
