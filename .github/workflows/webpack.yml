@@ -26,4 +26,5 @@ jobs:
       run: |
         npm install
         CI=false npm run build
+        npm run gh-pages -d build
         
